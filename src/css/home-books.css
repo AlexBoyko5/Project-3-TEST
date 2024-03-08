@@ -42,7 +42,8 @@ img {
   margin-bottom: 40px;
 }
 
-.container-title span, .last-word{
+.container-title span,
+.last-word {
   color: #4f2ee8;
 }
 
@@ -110,3 +111,9 @@ img {
   margin-top: 40px;
   margin-bottom: 40px;
 }
+
+/* @media screen and (min-width: 1440px) {
+  .container {
+    width: 996px;
+  }
+} */

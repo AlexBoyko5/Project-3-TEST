@@ -1,129 +1,67 @@
+body {
+    margin: 0;
+}
+
 .all-home {
     display: flex;
     flex-direction: column;
-    margin-top: 80px;
 }
 
 .container-home {
     display: flex;
     flex-direction: column;
-    margin: 0 12px 40px;
+    gap: 40px;
+    margin: 0 20px 40px;
 }
 
-@media screen and (max-width: 375px) {
+.home-books {
+    margin: 0 20px;
+}
+
+/* @media screen and (max-width: 375px) {
     .container-home>div:not(:last-child) {
         margin-bottom: 40px;
     }
-}
+} */
 
 @media screen and (min-width: 768px) {
+    .all-home {
+        margin-top: 80px;
+    }
+
     .container-home {
         flex-direction: row;
-        margin: 0 26px;
         max-width: 704px;
-        justify-content: space-between;
-        max-height: 474px;
+        justify-content: center;
+        align-items: center;
+        margin-right: 32px;
+        margin-left: 32px;
+        margin-bottom: 100px;
     }
 }
 
 @media screen and (min-width: 1440px) {
     .all-home {
         flex-direction: row;
+        margin-right: 24px;
+        margin-left: 24px;
     }
 
     .container-home {
         flex-direction: column;
         max-width: 356px;
         max-height: 1032px;
-        margin: 0 40px 86px 16px;
+        margin-right: 40px;
+        margin-left: 0;
+        gap: 0;
+        margin-bottom: 0;
     }
 
     .container-home>div:not(:last-child) {
         margin-bottom: 86px;
     }
-}
 
-=======body {
-    margin: 0;
-}
-
-/* .all-home {
-    display: flex;
-    flex-direction: column;
-    width: 335px;
-    gap: 40px;
-    margin-right: 20px;
-    margin-left: 20px;
-}
-
-@media screen and (min-width: 768px) {
-    .all-home {
-        flex-direction: row;
-        gap: 32px;
-        flex-wrap: wrap;
+    .home-books {
         width: 100%;
     }
-
-    .slider-container,
-    .block-support-ukraine {
-        width: calc((100% - 32px) / 2);
-    }
-
-    .container {
-        width: 100%;
-        margin-top: 100px;
-    }
-
-} */
-/* Загальні стилі для всіх дів */
-.all-home {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.all-cat,
-.sup,
-.book {
-    flex-basis: calc(33.33% - 20px);
-    /* 33.33% ширина для кожного дива з відступами */
-    margin: 0 20px 40px 20px;
-}
-
-/* Медіа-запит для екранів шириною 768px */
-@media only screen and (min-width: 768px) {
-
-    .all-cat,
-    .sup {
-        flex-basis: calc(50% - 20px);
-        /* 50% ширина для .all-cat та .sup */
-    }
-}
-
-/* Медіа-запит для екранів шириною 1440px */
-@media only screen and (min-width: 1440px) {
-    .all-cat {
-        order: -1;
-        /* Поміщає .all-cat вгорі */
-    }
-
-    .sup {
-        order: 0;
-        /* .sup буде після .all-cat */
-    }
-
-    .book {
-        flex-basis: calc(33.33% - 20px);
-        /* 33.33% ширина для book */
-        order: 1;
-        /* .book буде останнім */
-    }
-}
-
-.slider-container {
-    margin-bottom: 40px;
-    margin-left: 20px;
-    margin-right: 20px;
-    overflow-y: auto;
-    width: 335px;
 }
