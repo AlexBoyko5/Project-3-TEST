@@ -1,26 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/project-team-6/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bookshelf</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz@0,9..40;1,9..40&display=swap"
-      rel="stylesheet"
-    />
-    
-    <script type="module" crossorigin src="/project-team-6/commonHelpers.js"></script>
-    <link rel="modulepreload" crossorigin href="/project-team-6/assets/vendor-fe837a92.js">
-    <link rel="modulepreload" crossorigin href="/project-team-6/assets/modal-window-763d43e9.js">
-    <link rel="stylesheet" href="/project-team-6/assets/modal-window-70683c24.css">
-    <link rel="stylesheet" href="/project-team-6/assets/vendor-2715ca0a.css">
-  </head>
 
-  <body class="light">
-    <header id="header" class="header"> 
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/project-team-6/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bookshelf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz@0,9..40;1,9..40&display=swap"
+    rel="stylesheet" />
+  
+  <script type="module" crossorigin src="/project-team-6/commonHelpers.js"></script>
+  <link rel="modulepreload" crossorigin href="/project-team-6/assets/vendor-fe837a92.js">
+  <link rel="modulepreload" crossorigin href="/project-team-6/assets/modal-window-ce61a96c.js">
+  <link rel="stylesheet" href="/project-team-6/assets/modal-window-d19af842.css">
+  <link rel="stylesheet" href="/project-team-6/assets/vendor-2715ca0a.css">
+</head>
+
+<body class="light">
+  <header id="header" class="header"> 
     <div class="header-container"> 
         <a href="./index.html" class="header-logo-link" label="Logo"> 
             <svg class="header-logo" width="24" height="24"> 
@@ -98,6 +97,7 @@
             </ul>                  
         </div>
     </div>
+  <div class="all-home">
 
     <div class="slider-container" id="slider-container">
     <ul id="category-list"></ul>
@@ -134,8 +134,9 @@
 </div>
 
 
+  </div>
 
-    <div class="about-book-backdrop" data-modal=""> 
+  <div class="about-book-backdrop" data-modal=""> 
         <div class="modal about-book-window" data-modal-window=""> 
           <button class="about-book-close-btn" data-modal-close="" aria-label="Close modal">
             <svg class="about-book-close-btn-icon" width="24" height="24"> 
@@ -168,17 +169,18 @@
          </div>
        
 
-    <body>
+  <body>
     <div id="shopping-list-pagination" class="shoping-pagination"> </div>
     <div id="tui-pagination-container" class="tui-pagination"></div>
 </body>
 
-    <div id="loader"></div>
+  <div id="loader"></div>
 
 <div id="content"></div>
 
-    <button onclick="scrollToTop()" id="scrollToTopBtn" title="Go to top">Top</button>
+  <button onclick="scrollToTop()" id="scrollToTopBtn" title="Go to top">Top</button>
 
-    
-  </body>
+  
+</body>
+
 </html>
