@@ -2,7 +2,7 @@ body {
     margin: 0;
 }
 
-.all-home {
+/* .all-home {
     display: flex;
     flex-direction: column;
     width: 335px;
@@ -29,4 +29,56 @@ body {
         margin-top: 100px;
     }
 
+} */
+/* Загальні стилі для всіх дів */
+.all-home {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.all-cat,
+.sup,
+.book {
+    flex-basis: calc(33.33% - 20px);
+    /* 33.33% ширина для кожного дива з відступами */
+    margin: 0 20px 40px 20px;
+}
+
+/* Медіа-запит для екранів шириною 768px */
+@media only screen and (min-width: 768px) {
+
+    .all-cat,
+    .sup {
+        flex-basis: calc(50% - 20px);
+        /* 50% ширина для .all-cat та .sup */
+    }
+}
+
+/* Медіа-запит для екранів шириною 1440px */
+@media only screen and (min-width: 1440px) {
+    .all-cat {
+        order: -1;
+        /* Поміщає .all-cat вгорі */
+    }
+
+    .sup {
+        order: 0;
+        /* .sup буде після .all-cat */
+    }
+
+    .book {
+        flex-basis: calc(33.33% - 20px);
+        /* 33.33% ширина для book */
+        order: 1;
+        /* .book буде останнім */
+    }
+}
+
+.slider-container {
+    margin-bottom: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
+    overflow-y: auto;
+    width: 335px;
 }

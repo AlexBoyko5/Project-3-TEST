@@ -22,7 +22,7 @@
 #category-list {
     width: 307px;
     height: 228px;
-    margin: auto;
+    /* margin: auto; */
     overflow-y: auto;
 }
 
@@ -86,7 +86,6 @@
     #category-list {
         width: 309px;
         height: 472px;
-        margin: 0;
     }
 
     #category-list::-webkit-scrollbar-thumb {
