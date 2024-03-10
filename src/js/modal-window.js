@@ -1,7 +1,6 @@
 import { booksId } from '../books API/books-api';
 import iziToast from 'izitoast';
 import { openAndCloseModal } from './open-close-modal';
-import { localStorageAPI } from './local-storage';
 
 const bookIMG = document.querySelector('.popup-book-image');
 const bookTitle = document.querySelector('.popup-book-title');
@@ -9,9 +8,8 @@ const bookAuthor = document.querySelector('.popup-book-author');
 const bookReview = document.querySelector('.popup-book-review');
 const linkAmazon = document.querySelector('.popup-shopping-links-icon.amazon');
 const linkBook = document.querySelector('.popup-shopping-links-icon.book');
-const btn = document.querySelector('#add');
+const btn = document.querySelector('.modal-btn-add-to-shopinglist');
 const addMessage = document.querySelector('.under-button-text');
-addMessage.hidden = true;
 
 btn.addEventListener('click', addOrRemoveBook);
 
@@ -38,9 +36,6 @@ export async function modalAboutBook(bookId) {
 }
 
 export function addOrRemoveBook(e) {
-  if (e.target.disabled) {
-    return;
-  }
   const id = e.target.attributes.id.value;
   if (btn.textContent === 'Add to shopping list') {
     addBook(id);
@@ -50,48 +45,41 @@ export function addOrRemoveBook(e) {
 }
 
 export function addBook(id) {
-  let idBooks = localStorageAPI.getAllBooks();
+  let idBooks = localStorage.getItem('idBooks');
+
+  if (idBooks === 'undefined' || !idBooks || idBooks === '') {
+    idBooks = [];
+    localStorage.setItem('idBooks', JSON.stringify(idBooks));
+  }
+
+  idBooks = JSON.parse(localStorage.getItem('idBooks'));
+
   idBooks.push(id);
-  localStorageAPI.addToShoppingList(idBooks);
+  localStorage.setItem('idBooks', JSON.stringify(idBooks));
   btn.textContent = 'Remove from the shopping list';
-  addMessage.hidden = false;
-  updateShoppingList();
+  addMessage.style.opacity = 0;
+
 }
 
 export function removeBook(id) {
-  let idBooks = localStorageAPI.getAllBooks();
+  let idBooks = JSON.parse(localStorage.getItem('idBooks'));
 
   idBooks.splice(idBooks.indexOf(id), 1);
-  localStorageAPI.addToShoppingList(idBooks);
+  localStorage.setItem('idBooks', JSON.stringify(idBooks));
   btn.textContent = 'Add to shopping list';
-  addMessage.hidden = true;
-  updateShoppingList();
+  addMessage.style.opacity = 0;
+ 
 }
 
 export function checkLocalStorage(book) {
-  let permanentLS = localStorageAPI.getItem(`idBooks`);
+  let contantLS = localStorage.getItem('idBooks');
 
-  if (!permanentLS || permanentLS === '' || !permanentLS.includes(book.id)) {
+  if (!contantLS || contantLS === '' || !contantLS.includes(book._id)) {
     btn.textContent = 'Add to shopping list';
   } else {
     btn.textContent = 'Remove from the shopping list';
-    addMessage.hidden = false;
+    addMessage.style.opacity = 1;
   }
-  btn.attributes.id.value = book.id;
+  btn.attributes.id.value = book._id;
 }
-export function updateShoppingList() {
-  try {
-    const shoppingList = localStorageAPI.getAllBooks();
-    localStorage.setItem('idBooks', JSON.stringify(shoppingList));
-  } catch (error) {
-    console.error('Error updating shopping list:', error.message);
-  }
-}
-export async function handleBookClick(event) {
-  event.preventDefault();
-  const currentElem = event.target.closest('.book-item');
-  if (currentElem) {
-    const bookId = currentElem.attributes.id.value;
-    modalAboutBook(bookId);
-  }
-}
+

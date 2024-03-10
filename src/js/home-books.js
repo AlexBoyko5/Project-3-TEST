@@ -2,6 +2,7 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 import { booksByCategory, topBooks } from '../books API/books-api';
+import { modalAboutBook } from './modal-window';
 
 const booksContainerOne = document.querySelector('.books-container-one-cat');
 const booksContainerAll = document.querySelector(
@@ -10,15 +11,13 @@ const booksContainerAll = document.querySelector(
 const booksContainerAllTit = document.querySelector(
   '.books-container-all-cat-title'
 );
-const btnSeemore = document.querySelectorAll('button');
 
 const screenWidth = window.innerWidth;
-let category;
 let limit;
 
 function templateBook(book) {
   return `<div class="book-item">
-  <ul class="book-item-block">
+  <ul class="book-item-block" data-category="${book._id}">
     <li class="book-item-img">
       <img
         src="${book.book_image}"
@@ -28,6 +27,7 @@ function templateBook(book) {
         height="485"
         class="book-image"
       />
+      <p class="hidden-overflow">QUICK VIEW</p>
     </li>
     <li class="book-item-title">${book.title}</li>
     <li class="book-item-author">${book.author}</li>
@@ -42,6 +42,7 @@ function templateBooks(books) {
 function renderBooks(books, category) {
   booksContainerOne.innerHTML = '';
   booksContainerAll.innerHTML = '';
+  booksContainerAllTit.innerHTML = '';
 
   const categoryText = category;
   const words = categoryText.split(' ');
@@ -49,9 +50,19 @@ function renderBooks(books, category) {
   const markup =
     `<h3 class="container-category-one">${
       words.join(' ') + ' <span class="last-word">' + lastWord + '</span>'
-    }</h3>` + templateBooks(books);
+    }</h3>` +
+    `<div class="books-container-one-cat-block">${templateBooks(books)}</div>`;
 
-  booksContainerAll.innerHTML = markup;
+  booksContainerOne.innerHTML =
+    markup +
+    `<a href="#anchor-books">
+  <button type="button" class="scroll-up hidden">UP</button>
+</a>
+` +
+    `<a href="#goback" >
+    <button type="button" class="back-to-all-cat">GO BACK</button> 
+</a>
+`;
 }
 
 function renderBooksAll(categories) {
@@ -62,10 +73,15 @@ function renderBooksAll(categories) {
   let markup = '';
 
   categories.forEach(category => {
-    markup +=
-      `<h3 class="container-category-all">${category.list_name}</h3>` +
-      templateBooks(category.books) +
-      `<button type="button" id="btn-seemore" class="hidden" data-category="${category.list_name}">SEE MORE</button>`;
+    markup += `<div class="cat-books-btn">
+      <h3 class="container-category-all">${category.list_name}</h3>
+    <div class="books-container-all-cat-block-bpt">${templateBooks(
+      category.books
+    )}</div>
+    <button type="button" class="btn-seemore hidden" data-category="${
+      category.list_name
+    }">SEE MORE</button>
+    </div>`;
   });
   booksContainerAllTit.innerHTML = title;
   booksContainerAll.innerHTML = markup;
@@ -84,14 +100,12 @@ export async function loadBooksAllCat(category) {
   try {
     if (screenWidth >= 375 && screenWidth <= 767) {
       limit = 1;
-    } else if (screenWidth >= 768 && screenWidth <= 1279) {
+    } else if (screenWidth >= 768 && screenWidth <= 1157) {
       limit = 3;
     } else {
       limit = 5;
-      return;
     }
-
-    let topBookList = await topBooks(category,limit);
+    let topBookList = await topBooks(category, limit);
     topBookList = topBookList.map(el => {
       el.books = el.books.slice(0, limit);
       return el;
@@ -104,7 +118,7 @@ export async function loadBooksAllCat(category) {
 }
 
 function visibBtn() {
-  if (limit === 1 || limit === 3) {
+  if (limit === 1 || limit === 3 || limit === 5) {
     showBtn();
   } else {
     hideBtn();
@@ -112,47 +126,72 @@ function visibBtn() {
 }
 
 function showBtn() {
-  for (let i = 0; i < btnSeemore.length; i++) {
-    btnSeemore[i].classList.remove('hidden');
+  if (limit <= 5) {
+    const btnSeemore = document.querySelectorAll('.btn-seemore');
+    for (let i = 0; i < btnSeemore.length; i++) {
+      btnSeemore[i].classList.remove('hidden');
+    }
   }
 }
 
 function hideBtn() {
-  for (let i = 0; i < btnSeemore.length; i++) {
-    btnSeemore[i].classList.add('hidden');
+  if (limit >= 5) {
+    const btnSeemore = document.querySelectorAll('.btn-seemore');
+    for (let i = 0; i < btnSeemore.length; i++) {
+      btnSeemore[i].classList.add('hidden');
+    }
   }
 }
 
-btnSeemore.forEach(btn => {
-  btn.addEventListener('click', async event => {
-    const category = event.target.dataset.category;
-    if (category) {
-      await showMoreBooks(category);
-    }
-  });
-});
-
-async function showMoreBooks(category) {
+async function showMoreBooks(selectedCategory) {
   try {
-    let limit;
-    if (screenWidth >= 375 && screenWidth <= 767) {
-      limit = 5;
-    } else if (screenWidth >= 768 && screenWidth <= 1279) {
-      limit = 5;
-    } else {
-      return;
-    }
-
-    let moreBooks = await topBooks(category,limit);
-    moreBooks = moreBooks.map(el => {
+    let moreBooksBycat = await loadBooks(selectedCategory);
+    moreBooks = moreBooksBycat.map(el => {
       el.books = el.books.slice(0, limit);
       return el;
     });
     renderBooksAll(moreBooks);
+    visibBtn();
   } catch (error) {
-    showError('Sorry, no books! ', 'red', 'white');
+    console.log(error);
   }
 }
+
+booksContainerAll.addEventListener('click', async event => {
+  if (event.target && event.target.classList.contains('btn-seemore')) {
+    event.preventDefault();
+    const categoryFromButton = event.target.dataset.category;
+    await showMoreBooks(categoryFromButton);
+  }
+});
+
+// ==============////////MODAL LISTENERS//////////===============
+
+booksContainerAll.addEventListener('click', async event => {
+  if (event.target.closest('.book-item')) {
+    event.preventDefault();
+    const currentElem = event.target.closest('.book-item-block');
+    const bookId = currentElem.dataset.category;
+    if (bookId) {
+      const result = await modalAboutBook(bookId);
+      console.log(result);
+    }
+  }
+});
+
+booksContainerOne.addEventListener('click', async event => {
+  event.preventDefault();
+  if (event.target.closest('.book-item')) {
+    const currentElem = event.target.closest('.book-item-block');
+    const bookId = currentElem.dataset.category;
+    if (bookId) {
+      const result = await modalAboutBook(bookId);
+      console.log(result);
+    }
+  }
+});
+
+// ==============////////IZI//////////===============
 
 function showError(text, bgColor, txtColor) {
   iziToast.error({
@@ -169,3 +208,28 @@ function showError(text, bgColor, txtColor) {
     closeOnClick: true,
   });
 }
+
+// ==============////////SCROLL//////////===============
+
+const anchor = document.getElementById('anchor-books');
+
+window.addEventListener('scroll', () => {
+  const scrollButtons = document.querySelectorAll('.scroll-up');
+  const anchorPosition = anchor.getBoundingClientRect().top;
+  const screenHeight = window.innerHeight;
+
+  scrollButtons.forEach(button => {
+    const buttonPosition = button.getBoundingClientRect().bottom;
+    const buttonVisibilityThreshold = screenHeight * 0.9;
+
+    if (
+      Math.abs(anchorPosition - buttonPosition) <= buttonVisibilityThreshold
+    ) {
+      button.classList.add('hidden');
+    } else {
+      button.classList.remove('hidden');
+    }
+  });
+});
+
+
